@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceInterceptor", "ServiceInterceptor\ServiceInterceptor.csproj", "{00173AB2-9DA3-4AD3-ADB2-65B563D3A5FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceInterceptor.Tests", "ServiceInterceptor.Tests\ServiceInterceptor.Tests.csproj", "{296B8147-7E0E-4E5B-AE1D-133A95971B9E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{00173AB2-9DA3-4AD3-ADB2-65B563D3A5FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00173AB2-9DA3-4AD3-ADB2-65B563D3A5FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00173AB2-9DA3-4AD3-ADB2-65B563D3A5FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00173AB2-9DA3-4AD3-ADB2-65B563D3A5FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{296B8147-7E0E-4E5B-AE1D-133A95971B9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{296B8147-7E0E-4E5B-AE1D-133A95971B9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{296B8147-7E0E-4E5B-AE1D-133A95971B9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{296B8147-7E0E-4E5B-AE1D-133A95971B9E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

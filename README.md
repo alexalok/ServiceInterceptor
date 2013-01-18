@@ -20,7 +20,7 @@ methods but there are many other ways to use this handy attribute.
 
 ####IServiceInterceptor####
 
-The following example uses the ServiceInteceptor attribute in conjunction with
+The following example uses the ServiceInterceptor attribute in conjunction with
 the IServiceInterceptor interface to gain access to the before and after method
 call hooks.
 

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>ServiceInterceptor by randyburden</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>ServiceInterceptor</h1>
+          <h2>A WCF service interceptor that provides easy access to the many hooks/interception points that WCF provides.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/randyburden/ServiceInterceptor/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/randyburden/ServiceInterceptor/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/randyburden/ServiceInterceptor" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>ServiceInterceptor</h1>
+
+<h3>Overview</h3>
+
+<p>The ServiceInterceptor is a generic, extendable, and derivable attribute that 
+can be placed on any WCF service or method to gain access to the many 
+hooks/interception points that WCF provides.</p>
+
+<p>In a nutshell, it is a wrapper around the various integration points built
+into WCF ( The .NET Windows Communication Foundation framework for building 
+service-oriented applications ).</p>
+
+<p>Its primary usage is to be able to easily decorate a web service class with
+the ServiceInterceptor attribute and inherit from the IServiceInterceptor
+interface to gain access to the <code>BeforeCall()</code> and <code>AfterCall()</code> interception
+methods but there are many other ways to use this handy attribute.</p>
+
+<h3>Usage</h3>
+
+<h4>IServiceInterceptor</h4>
+
+<p>The following example uses the ServiceInterceptor attribute in conjunction with
+the IServiceInterceptor interface to gain access to the before and after method
+call hooks.</p>
+
+<div class="highlight"><pre><span class="na">[ServiceContract]</span>
+<span class="k">public</span> <span class="k">interface</span> <span class="n">IHelloWorldService</span>
+<span class="p">{</span>
+<span class="na">    [OperationContract]</span>
+    <span class="kt">string</span> <span class="nf">SayHello</span><span class="p">(</span> <span class="kt">string</span> <span class="n">name</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="na">[ServiceInterceptor]</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">HelloWorldService</span> <span class="p">:</span> <span class="n">IHelloWorldService</span><span class="p">,</span> <span class="n">IServiceInterceptor</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="nf">SayHello</span><span class="p">(</span> <span class="kt">string</span> <span class="n">name</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="kt">string</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span> <span class="s">"Hello, {0}"</span><span class="p">,</span> <span class="n">name</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="cp">#region Implementation of IServiceInterceptor</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Called after the request has been received and deserialized in a WCF message object,</span>
+    <span class="c1">/// but before the operation method has been invoked.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name="operationName"&gt;The name of the operation.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name="inputs"&gt;The objects passed to the method by the client.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;returns&gt;</span>
+    <span class="c1">/// The correlation state that is returned as the correlationState parameter in AfterCall. </span>
+    <span class="c1">/// Return null if you do not intend to use correlation state.</span>
+    <span class="c1">/// &lt;/returns&gt;</span>
+    <span class="k">public</span> <span class="kt">object</span> <span class="nf">BeforeCall</span><span class="p">(</span> <span class="kt">string</span> <span class="n">operationName</span><span class="p">,</span> <span class="kt">object</span><span class="p">[]</span> <span class="n">inputs</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Do whatever you want before the service method has been called.</span>
+
+        <span class="c1">// Examples: Log method calls, perform validation on the inputs, perform basic</span>
+        <span class="c1">//           authentication/authorization, initialize a unit-of-work, etc.</span>
+
+        <span class="c1">// You could throw a FaultException to abort the call to the service method</span>
+        <span class="c1">// or you could modify the inputs to the service method, etc.</span>
+
+        <span class="c1">// You can return an object which will be passed as the correlationState parameter</span>
+        <span class="c1">// to the AfterCall() method or simply return null.</span>
+        <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Called after the operation has been invoked, but before the response is to be serialized.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name="operationName"&gt;The name of the invoked operation.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name="outputs"&gt;Any output objects.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name="returnValue"&gt;The return value of the operation.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name="correlationState"&gt;Any correlation state returned from the BeforeCall method, or null.&lt;/param&gt;</span>
+    <span class="k">public</span> <span class="k">void</span> <span class="nf">AfterCall</span><span class="p">(</span> <span class="kt">string</span> <span class="n">operationName</span><span class="p">,</span> <span class="kt">object</span><span class="p">[]</span> <span class="n">outputs</span><span class="p">,</span> <span class="kt">object</span> <span class="n">returnValue</span><span class="p">,</span> <span class="kt">object</span> <span class="n">correlationState</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Do whatever you want after the service method has been called.</span>
+    <span class="p">}</span>
+
+    <span class="cp">#endregion Implementation of IServiceInterceptor</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4>Creating Custom Attributes</h4>
+
+<p>The following example demonstrates how easy it is to create a custom attribute
+by deriving from the ServiceInterceptorAttribute and overriding two of its methods
+in order to implement a basic logging attribute that can be placed on the service
+itself or on any method that needs the desired behavior.</p>
+
+<div class="highlight"><pre>
+<span class="na">[ServiceContract]</span>
+<span class="k">public</span> <span class="k">interface</span> <span class="n">IHelloWorldService</span>
+<span class="p">{</span>
+<span class="na">    [OperationContract]</span>
+    <span class="kt">string</span> <span class="nf">SayHello</span><span class="p">(</span> <span class="kt">string</span> <span class="n">name</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="na">[LogCallsToDebugger]</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">HelloWorldService</span> <span class="p">:</span> <span class="n">IHelloWorldService</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="nf">SayHello</span><span class="p">(</span> <span class="kt">string</span> <span class="n">name</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="kt">string</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span> <span class="s">"Hello, {0}"</span><span class="p">,</span> <span class="n">name</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">/// &lt;summary&gt;</span>
+<span class="c1">/// Example of a custom interceptor that logs calls to the debug trace listeners.</span>
+<span class="c1">/// &lt;/summary&gt;</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">LogCallsToDebugger</span> <span class="p">:</span> <span class="n">ServiceInterceptorAttribute</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="n">Type</span> <span class="n">_serviceType</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">ApplyDispatchBehavior</span><span class="p">(</span> <span class="n">ServiceDescription</span> <span class="n">serviceDescription</span><span class="p">,</span> <span class="n">ServiceHostBase</span> <span class="n">serviceHostBase</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">_serviceType</span> <span class="p">=</span> <span class="n">serviceDescription</span><span class="p">.</span><span class="n">ServiceType</span><span class="p">;</span>
+
+        <span class="k">base</span><span class="p">.</span><span class="n">ApplyDispatchBehavior</span><span class="p">(</span> <span class="n">serviceDescription</span><span class="p">,</span> <span class="n">serviceHostBase</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">override</span> <span class="kt">object</span> <span class="nf">BeforeCall</span><span class="p">(</span> <span class="kt">string</span> <span class="n">operationName</span><span class="p">,</span> <span class="kt">object</span><span class="p">[]</span> <span class="n">inputs</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">string</span> <span class="n">message</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span> <span class="s">"{0}.{1} was called."</span><span class="p">,</span> <span class="n">_serviceType</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span> <span class="n">operationName</span> <span class="p">);</span>
+
+        <span class="n">Debug</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span> <span class="n">message</span> <span class="p">);</span>
+
+        <span class="k">return</span> <span class="k">base</span><span class="p">.</span><span class="n">BeforeCall</span><span class="p">(</span> <span class="n">operationName</span><span class="p">,</span> <span class="n">inputs</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</pre></div>
+
+<p>Please see the test project for more usage examples.</p>
+
+<h3>License</h3>
+
+<p>ServiceInterceptor v1.0.0.0 ( <a href="https://github.com/randyburden/ServiceInterceptor">https://github.com/randyburden/ServiceInterceptor</a> )</p>
+
+<p>MIT License:</p>
+
+<p>Copyright (c) 2013, Randy Burden ( <a href="http://randyburden.com">http://randyburden.com</a> )
+All rights reserved.</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
+associated documentation files (the "Software"), to deal in the Software without restriction, including 
+without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the 
+following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial 
+portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT 
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN 
+NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. </p>
+        </section>
+
+        <footer>
+          ServiceInterceptor is maintained by <a href="https://github.com/randyburden">randyburden</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>

@@ -5,11 +5,10 @@ ServiceInterceptor
 
 The ServiceInterceptor is a generic, extendable, and derivable attribute that 
 can be placed on any WCF service or method to gain access to the many 
-hooks/interception points that WCF provides.
+hooks/interception/extensibility points that WCF provides.
 
-In a nutshell, it is a wrapper around the various integration points built
-into WCF ( The .NET Windows Communication Foundation framework for building 
-service-oriented applications ).
+In a nutshell, the ServiceInterceptor is a easy to use wrapper around the WCF extensibility model. ( WCF is the .NET Windows Communication Foundation framework for building 
+service-oriented applications. )
 
 Its primary usage is to be able to easily decorate a web service class with
 the ServiceInterceptor attribute and inherit from the IServiceInterceptor

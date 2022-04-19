@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle( "ServiceInterceptor" )]
-[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyDescription("A WCF service interceptor that provides easy access to the many hooks/interception/extensibility points that WCF provides.")]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "Microsoft" )]
+[assembly: AssemblyCompany("randyburden")]
 [assembly: AssemblyProduct( "ServiceInterceptor" )]
-[assembly: AssemblyCopyright( "Copyright © Microsoft 2013" )]
+[assembly: AssemblyCopyright("Copyright © randyburden 2013")]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 

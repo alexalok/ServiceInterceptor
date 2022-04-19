@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>randyburden</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/alexalok/ServiceInterceptor</projectUrl>
+    <description>A WCF service interceptor that provides easy access to the many hooks/interception/extensibility points that WCF provides.</description>
+    <copyright>$copyright$</copyright>
+    <tags>wcf,service interceptor</tags>
+  </metadata>
+</package>
